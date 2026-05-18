@@ -4,10 +4,11 @@ import argparse
 from pathlib import Path
 
 from molinaro.ui import MolinaroApp
+from molinaro.version import APP_NAME
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Consulta archivos Excel con SQL en HojaSQL Studio.")
+    parser = argparse.ArgumentParser(description=f"Consulta archivos Excel con SQL en {APP_NAME}.")
     parser.add_argument("xlsx", nargs="?", help="Ruta de un archivo Excel para abrir al iniciar.")
     args = parser.parse_args()
 

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=HojaSQL Studio
+Comment=Consulta archivos Excel usando SQL en una interfaz grafica
+Exec=/opt/hojasql-studio/HojaSQLStudio
+Icon=hojasql-studio
+Terminal=false
+Categories=Office;
+MimeType=application/vnd.ms-excel;application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;application/vnd.ms-excel.sheet.macroEnabled.12;
+StartupWMClass=HojaSQLStudio

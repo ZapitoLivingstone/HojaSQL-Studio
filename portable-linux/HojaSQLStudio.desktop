@@ -2,7 +2,6 @@
 Type=Application
 Name=HojaSQL Studio
 Comment=Consulta archivos Excel usando SQL en una interfaz grafica
-Exec=sh -lc 'cd "$(dirname "$1")"; ./abrir_consola_excel_portable.sh' sh %k
+Exec=bash -lc 'cd "$(dirname "$1")" && exec ./abrir_consola_excel_portable.sh' _ %k
 Icon=chopper
 Terminal=false
-Categories=Utility;Office;

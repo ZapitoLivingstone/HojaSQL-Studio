@@ -3,8 +3,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 import hashlib
 import json
+import os
 from pathlib import Path
 import shlex
+import threading
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 
@@ -12,10 +14,12 @@ import pandas as pd
 
 from molinaro.query_engine import QueryEngine, QueryResult
 from molinaro.resources import resource_path
+from molinaro.updater import check_for_updates, open_download_page
+from molinaro.version import APP_NAME, APP_VERSION
 from molinaro.workbook import EXCEL_EXTENSIONS, TableMeta, WorkbookSession, quote_identifier
 
 
-APP_TITLE = "HojaSQL Studio"
+APP_TITLE = APP_NAME
 SQL_KEYWORDS = [
     "SELECT",
     "FROM",
@@ -69,7 +73,14 @@ COMMAND_ALIASES = {
     ".cols": ".columns",
     ".find": ".findcol",
 }
-STATE_DIR = Path.cwd() / ".molinaro-state"
+def resolve_state_dir() -> Path:
+    state_home = os.environ.get("XDG_STATE_HOME")
+    if state_home:
+        return Path(state_home).expanduser() / "molinaro"
+    return Path.home() / ".local" / "state" / "molinaro"
+
+
+STATE_DIR = resolve_state_dir()
 VIEWS_FILE = STATE_DIR / "saved_views.json"
 
 
@@ -169,6 +180,7 @@ class MolinaroApp:
         self.view_name_var = tk.StringVar()
         self.popup: AutoCompletePopup | None = None
         self.saved_views: dict[str, str] = {}
+        self.update_info: dict[str, str] | None = None
 
         self._configure_style()
         self._build_layout()
@@ -178,6 +190,7 @@ class MolinaroApp:
             self.open_workbook(initial_path)
         else:
             self.root.after(50, self.open_workbook_dialog)
+        self.root.after(1200, self.start_update_check)
 
     def _set_window_icon(self) -> None:
         ico_path = resource_path("chopper.ico")
@@ -229,6 +242,7 @@ class MolinaroApp:
         ttk.Button(controls, text="Ejecutar", command=self.execute_current, style="Accent.TButton").pack(side="left", padx=8)
         ttk.Button(controls, text="Exportar", command=self.export_result, style="Accent.TButton").pack(side="left")
         ttk.Button(controls, text="Todas las columnas", command=self.show_all_columns, style="Accent.TButton").pack(side="left", padx=(8, 0))
+        ttk.Button(controls, text="Buscar actualizaciones", command=self.check_updates_manually, style="Accent.TButton").pack(side="left", padx=(8, 0))
         ttk.Button(controls, text="Limpiar consola", command=self.clear_console, style="Accent.TButton").pack(side="left", padx=(8, 0))
         ttk.Label(controls, textvariable=self.file_var, style="Muted.TLabel").pack(side="right")
 
@@ -456,6 +470,7 @@ class MolinaroApp:
             return
         self.log("=============================== HojaSQL Studio Cyber SQL Console ===============================", "magenta")
         self.log(f"Archivo: {self.workbook.xlsx_path}", "accent")
+        self.log(f"Versión: {APP_VERSION}", "dim")
         self.log(f"Tablas cargadas: {len(self.workbook.tables)}", "dim")
         self.log("Enter ejecuta | Shift+Enter agrega linea | TAB autocompleta | .help muestra comandos", "dim")
         self.log("", "plain")
@@ -887,6 +902,47 @@ class MolinaroApp:
         self.rerender_current_result()
         self.log("Mostrando todas las columnas del resultado actual.", "ok")
         self.status_var.set("Mostrando todas las columnas.")
+
+    def start_update_check(self) -> None:
+        thread = threading.Thread(target=self._background_update_check, daemon=True)
+        thread.start()
+
+    def _background_update_check(self) -> None:
+        update_info = check_for_updates()
+        if update_info:
+            self.root.after(0, lambda: self.notify_update_available(update_info, automatic=True))
+
+    def check_updates_manually(self) -> None:
+        self.status_var.set("Buscando actualizaciones...")
+        thread = threading.Thread(target=self._manual_update_check, daemon=True)
+        thread.start()
+
+    def _manual_update_check(self) -> None:
+        update_info = check_for_updates()
+        self.root.after(0, lambda: self.finish_manual_update_check(update_info))
+
+    def finish_manual_update_check(self, update_info: dict[str, str] | None) -> None:
+        if update_info:
+            self.notify_update_available(update_info, automatic=False)
+            return
+        self.log("No hay actualizaciones disponibles.", "dim")
+        self.status_var.set("Ya tienes la última versión disponible.")
+        messagebox.showinfo(APP_TITLE, "Ya tienes la última versión disponible.")
+
+    def notify_update_available(self, update_info: dict[str, str], automatic: bool) -> None:
+        self.update_info = update_info
+        version = update_info["version"]
+        self.log(f"Actualización disponible: {version}", "warn")
+        self.status_var.set(f"Actualización disponible: {version}")
+        prompt = (
+            f"Hay una nueva versión disponible: {version}\n\n"
+            f"Versión actual: {APP_VERSION}\n"
+            "¿Quieres abrir la descarga?"
+        )
+        if automatic:
+            prompt = "Se detectó una nueva versión.\n\n" + prompt
+        if messagebox.askyesno(APP_TITLE, prompt):
+            open_download_page(update_info["url"] or update_info["html_url"])
 
     def preview_selected_table(self) -> None:
         table = self.selected_table()

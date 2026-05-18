@@ -5,7 +5,7 @@ a = Analysis(
     ['consultar_xlsx.py'],
     pathex=[],
     binaries=[],
-    datas=[('assets/hojasql.png', 'assets'), ('chopper.ico', '.')],
+    datas=[('assets/hojasql.png', 'assets'), ('chopper.ico', '.'), ('build_info.json', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

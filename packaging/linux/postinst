@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+chmod 755 /opt/hojasql-studio/HojaSQLStudio || true
+chmod 644 /usr/share/applications/hojasql-studio.desktop || true
+chmod 644 /usr/share/pixmaps/hojasql-studio.png || true
+
+if command -v update-desktop-database >/dev/null 2>&1; then
+  update-desktop-database /usr/share/applications >/dev/null 2>&1 || true
+fi
+
+if command -v gtk-update-icon-cache >/dev/null 2>&1; then
+  gtk-update-icon-cache /usr/share/icons/hicolor >/dev/null 2>&1 || true
+fi
+

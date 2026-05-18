@@ -1,61 +1,75 @@
-# HojaSQL Studio
+# Molinaro
 
-Interfaz para abrir cualquier Excel del computador, escribir consultas SQL en una consola estilo ciberpunk y ver los resultados en una tabla dentro de la misma ventana.
+`Molinaro`, visible para el usuario como `HojaSQL Studio`, es una app de escritorio para abrir archivos Excel, consultarlos con SQL y exportar resultados.
 
-## Mejoras principales
+## Qué hace
 
-- Selector grafico de archivo Excel.
-- Consola visual estilo terminal con soporte para SQL y comandos tipo `.help`.
-- `Enter` ejecuta y `Shift+Enter` agrega una nueva linea.
-- Autocompletado con `TAB` para comandos, tablas, columnas y keywords SQL.
-- Tabla de resultados persistente en la parte inferior.
-- Exportacion directa a `.xlsx` o `.csv`.
+- Abre `.xlsx`, `.xls` y `.xlsm`.
+- Permite consultar hojas con SQL usando DuckDB.
+- Incluye autocompletado, comandos rápidos y exportación a `.csv` o `.xlsx`.
 
-## Ejecutar en desarrollo
+## Instalación
 
-### Linux
+La forma recomendada es descargar un paquete desde `Releases` y no clonar el repositorio para usar la app.
+
+### Debian y Ubuntu
+
+Descarga el paquete `.deb` y luego instala:
 
 ```bash
-./abrir_consola_excel.sh
+sudo apt install ./hojasql-studio_<version>_amd64.deb
 ```
 
-O abriendo un archivo especifico:
+Después podrás abrir `HojaSQL Studio` desde el menú de aplicaciones.
+
+### Arch, Omarchy y otras distros
+
+Descarga el portable Linux en formato `.tar.gz`, extráelo y entra a la carpeta:
 
 ```bash
-./abrir_consola_excel.sh ruta/al/archivo.xlsx
+tar -xzf HojaSQLStudio-linux-portable.tar.gz
+cd portable-linux
+```
+
+Tienes dos formas de usarlo.
+
+Sin instalar nada en el sistema:
+
+```bash
+./abrir_consola_excel_portable.sh
+```
+
+Instalándolo en tu sesión de usuario para que aparezca en el launcher:
+
+```bash
+./install_local.sh
+```
+
+Eso instala:
+
+- el ejecutable en `~/.local/opt/hojasql-studio`
+- el comando `hojasql-studio` en `~/.local/bin`
+- el launcher en `~/.local/share/applications/hojasql-studio.desktop`
+- el icono en `~/.local/share/icons/hicolor/256x256/apps`
+
+Para desinstalar:
+
+```bash
+./uninstall_local.sh
 ```
 
 ### Windows
 
-Doble click en `abrir_consola_excel.bat` o desde PowerShell/CMD:
+El instalador de Windows se publicará en `Releases`.
 
-```bat
-abrir_consola_excel.bat ruta\al\archivo.xlsx
-```
+Cuando esté disponible, bastará con descargar `HojaSQLStudio-setup.exe` y ejecutarlo.
 
-## Uso
+## Uso básico
 
 1. Abre un archivo Excel.
-2. Escribe SQL o un comando en la consola.
+2. Escribe una consulta SQL.
 3. Ejecuta con `Enter`.
-4. Usa `Shift+Enter` para ordenar la consulta en varias lineas.
-5. Usa `TAB` para autocompletar.
-6. Revisa el resultado abajo y exporta si lo necesitas.
-
-Comandos utiles:
-
-```text
-.help
-.tables
-.cols panel_data COMUNA
-.find TIMELINE
-.preview panel_data 20
-.count panel_data
-.open
-.export resultado.xlsx
-.status
-.quit
-```
+4. Exporta el resultado si lo necesitas.
 
 Ejemplo:
 
@@ -68,45 +82,6 @@ ORDER BY total DESC
 LIMIT 10;
 ```
 
-## Dependencias
+## Actualizaciones
 
-Runtime:
-
-```text
-pandas
-openpyxl
-duckdb
-```
-
-Build:
-
-```text
-pip install -r requirements-build.txt
-```
-
-## Builds portables
-
-### Linux
-
-```bash
-./build_linux.sh
-```
-
-Genera una app grafica en:
-
-```text
-dist/HojaSQLStudio/
-```
-
-### Windows
-
-```bat
-build_windows.bat
-```
-
-Genera:
-
-```text
-portable-windows\HojaSQLStudio.exe
-HojaSQLStudio-windows-portable.zip
-```
+La aplicación puede detectar nuevas versiones publicadas en `GitHub Releases` y abrir la descarga correspondiente a tu sistema.
