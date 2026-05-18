@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.molinaro-state/
+assets/
+build/
+dist/
+portable-linux/XlsxSqlConsole/
+portable-windows/
+*.zip
