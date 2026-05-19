@@ -60,9 +60,13 @@ Para desinstalar:
 
 ### Windows
 
-El instalador de Windows se publicará en `Releases`.
+Puedes usar HojaSQL Studio instalándolo en tu sistema o usando la versión portable. Ambas opciones están disponibles en la página de `Releases`.
 
-Cuando esté disponible, bastará con descargar `HojaSQLStudio-setup.exe` y ejecutarlo.
+**Opción 1: Instalador (.exe)**
+Descarga el archivo `HojaSQLStudio-setup.exe`, ejecútalo y sigue los pasos del asistente de instalación. Esto creará accesos directos en el menú de inicio y escritorio.
+
+**Opción 2: Versión Portable (.zip)**
+Descarga el archivo `HojaSQLStudio-windows-portable.zip`. Descomprímelo en una carpeta de tu preferencia y ejecuta `HojaSQLStudio.exe` para abrir la aplicación sin necesidad de instalar nada.
 
 ## Uso básico
 

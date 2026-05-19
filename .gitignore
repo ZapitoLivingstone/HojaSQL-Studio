@@ -5,7 +5,6 @@ __pycache__/
 build_info.json
 build/
 dist/
-portable-windows/
 *.deb
 *.zip
 *.tar.gz
