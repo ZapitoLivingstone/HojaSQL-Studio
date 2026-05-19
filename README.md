@@ -14,7 +14,7 @@ La forma recomendada es descargar un paquete desde `Releases` y no clonar el rep
 
 ### Debian y Ubuntu
 
-Descarga el paquete `.deb` y luego instala:
+Descarga el paquete `.deb` (puedes encontrarlo en la página de [Releases](https://github.com/ZapitoLivingstone/HojaSQL-Studio/releases/latest)) y luego instala:
 
 ```bash
 sudo apt install ./hojasql-studio_<version>_amd64.deb
@@ -24,7 +24,7 @@ Después podrás abrir `HojaSQL Studio` desde el menú de aplicaciones.
 
 ### Arch, Omarchy y otras distros
 
-Descarga el portable Linux en formato `.tar.gz`, extráelo y entra a la carpeta:
+Descarga el portable Linux en formato `.tar.gz` ([enlace directo](https://github.com/ZapitoLivingstone/HojaSQL-Studio/releases/latest/download/HojaSQLStudio-linux-portable.tar.gz)), extráelo y entra a la carpeta:
 
 ```bash
 tar -xzf HojaSQLStudio-linux-portable.tar.gz
@@ -63,10 +63,10 @@ Para desinstalar:
 Puedes usar HojaSQL Studio instalándolo en tu sistema o usando la versión portable. Ambas opciones están disponibles en la página de `Releases`.
 
 **Opción 1: Instalador (.exe)**
-Descarga el archivo `HojaSQLStudio-setup.exe`, ejecútalo y sigue los pasos del asistente de instalación. Esto creará accesos directos en el menú de inicio y escritorio.
+Descarga el archivo [`HojaSQLStudio-setup.exe`](https://github.com/ZapitoLivingstone/HojaSQL-Studio/releases/latest/download/HojaSQLStudio-setup.exe), ejecútalo y sigue los pasos del asistente de instalación. Esto creará accesos directos en el menú de inicio y escritorio.
 
 **Opción 2: Versión Portable (.zip)**
-Descarga el archivo `HojaSQLStudio-windows-portable.zip`. Descomprímelo en una carpeta de tu preferencia y ejecuta `HojaSQLStudio.exe` para abrir la aplicación sin necesidad de instalar nada.
+Descarga el archivo [`HojaSQLStudio-windows-portable.zip`](https://github.com/ZapitoLivingstone/HojaSQL-Studio/releases/latest/download/HojaSQLStudio-windows-portable.zip). Descomprímelo en una carpeta de tu preferencia y ejecuta `HojaSQLStudio.exe` para abrir la aplicación sin necesidad de instalar nada.
 
 ## Uso básico
 
